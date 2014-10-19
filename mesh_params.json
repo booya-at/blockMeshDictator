@@ -1,0 +1,18 @@
+{
+    "whole_mesh": false,
+    "inner_min": [-3, -2.5, -3],
+    "inner_max": [3, 2.5, 3],
+    "inner_size": 0.25,
+    "outer_min": [-30, -10, -10],
+    "outer_max": [15, 10, 10],
+    "bottom_num": 15,
+    "bottom_grading": null,
+    "top_num": 15,
+    "top_grading": null,
+    "side_num": 20,
+    "side_grading": null,
+    "inlet_num": 20,
+    "inlet_grading": null,
+    "outlet_num": 45,
+    "outlet_grading": null
+}
