@@ -64,7 +64,7 @@ edges
 
 boundary
     (
-    inlet
+    outlet
         {
         type patch;
         faces
@@ -77,7 +77,7 @@ boundary
             (58 59 63 39)
         );
     }
-    outlet
+    inlet
     {
         type patch;
         faces
@@ -115,7 +115,7 @@ boundary
             (2 33 50 10)
         );
     }
-    lowerWall
+    upperWall
     {
         type patch;
         faces
@@ -128,7 +128,7 @@ boundary
             (9 21 47 51)
         );
     }
-    upperWall
+    lowerWall
     {
         type patch;
         faces
