@@ -35,9 +35,12 @@ if __name__ == "__main__":
                       help="")
 
     options, args = parser.parse_args()
-    file_name = options.filename or "mesh_params.json"
-    if not os.path.isfile(file_name):
-        raise IOError("file not found: {}".format(file_name))
-    with open(file_name, 'r') as paramfile:
-        mesh_params = json.load(paramfile)
-    print(return_blockmeshdict(mesh_params))
+    file_name = options.filename
+    if file_name:
+        if not os.path.isfile(file_name):
+            raise IOError("file not found: {}".format(file_name))
+        with open(file_name, 'r') as paramfile:
+            mesh_params = json.load(paramfile)
+    else:
+        mesh_params = default_mesh_params
+    print(blockmeshdictator.return_blockmeshdict(mesh_params))
