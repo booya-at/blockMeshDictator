@@ -14,15 +14,15 @@ default_mesh_params = {
     "inner_size": 0.25,
     "outer_min": [-30, -10, -10],
     "outer_max": [15, 10, 10],
-    "bottom_num": 15,
+    "bottom_cells": 15,
     "bottom_grading": None,
-    "top_num": 15,
+    "top_cells": 15,
     "top_grading": None,
-    "side_num": 20,
+    "side_cells": 20,
     "side_grading": None,
-    "inlet_num": 20,
+    "inlet_cells": 20,
     "inlet_grading": None,
-    "outlet_num": 45,
+    "outlet_cells": 45,
     "outlet_grading": None
 }
 

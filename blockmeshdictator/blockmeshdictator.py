@@ -6,7 +6,8 @@ import scipy.optimize
 
 env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 env.filters.update({
-    "floatformat": lambda f: "{: 19}".format(f)
+    "floatformat": lambda f: "{: 19}".format(f),
+    "fourtimes": lambda s: "{0} {0} {0} {0}".format(s)
 })
 
 
@@ -137,16 +138,15 @@ def return_blockmeshdict(mesh_params):
         elif mesh_params[keyword_grading] is None:
             if inverse:
                 #print(mesh_params[keyword_number], length)
-                mesh_params[keyword_grading] = 1/get_grading(mesh_params[keyword_number], mesh_params["inner_size"], length)
+                mesh_params[keyword_grading] = 1/get_grading(mesh_params[keyword_number], mesh_params["inner_size"], abs(length))
             else:
-                mesh_params[keyword_grading] = get_grading(mesh_params[keyword_number], mesh_params["inner_size"], length)
+                mesh_params[keyword_grading] = get_grading(mesh_params[keyword_number], mesh_params["inner_size"], abs(length))
 
-    auto_grading("bottom_grading", "bottom_num", mesh_params["outer_max"][2] - mesh_params["inner_max"][2], inverse=True)
-    auto_grading("top_grading", "top_num", mesh_params["inner_min"][2] - mesh_params["outer_min"][2])
-    auto_grading("side_grading", "side_num", - mesh_params["outer_min"][1] + mesh_params["inner_min"][1], inverse=True)
-    auto_grading("inlet_grading", "inlet_num", mesh_params["outer_max"][0] - mesh_params["inner_max"][0], inverse=True)
-    auto_grading("outlet_grading", "outlet_num", mesh_params["inner_min"][0] - mesh_params["outer_min"][0])
-    auto_grading("side_grading", "side_num", mesh_params["inner_min"][1] - mesh_params["outer_min"][1], inverse=True)
+    auto_grading("bottom_grading", "bottom_cells", mesh_params["outer_max"][2] - mesh_params["inner_max"][2])
+    auto_grading("top_grading", "top_cells", mesh_params["inner_max"][2] - mesh_params["outer_max"][2], inverse=True)
+    auto_grading("inlet_grading", "inlet_cells", mesh_params["inner_min"][0] - mesh_params["outer_min"][0])
+    auto_grading("outlet_grading", "outlet_cells", mesh_params["inner_min"][0] - mesh_params["outer_min"][0], inverse=True)
+    auto_grading("side_grading", "side_cells", mesh_params["inner_min"][1] - mesh_params["outer_min"][1], inverse=True)
     mesh_params["side_grading_inv"] = 1/mesh_params["side_grading"]
 
     vertices = get_vertices(mesh_params)
