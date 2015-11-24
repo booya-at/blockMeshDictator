@@ -141,6 +141,8 @@ def return_blockmeshdict(mesh_params):
                 mesh_params[keyword_grading] = 1/get_grading(mesh_params[keyword_number], mesh_params["inner_size"], abs(length))
             else:
                 mesh_params[keyword_grading] = get_grading(mesh_params[keyword_number], mesh_params["inner_size"], abs(length))
+        else:
+            raise NotImplementedError("can only auto-grade not auto-cellno")
 
     auto_grading("bottom_grading", "bottom_cells", mesh_params["outer_max"][2] - mesh_params["inner_max"][2])
     auto_grading("top_grading", "top_cells", mesh_params["inner_max"][2] - mesh_params["outer_max"][2], inverse=True)
