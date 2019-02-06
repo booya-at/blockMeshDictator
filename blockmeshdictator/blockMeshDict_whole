@@ -27,6 +27,7 @@ vertices
 blocks
     (
     //Center Blocks
+    hex ({{ "BBB BBC BCC BCB CBB CBC CCC CCB" | node_ids }}) ()
     hex (0 1 2 3 4 5 6 7) ( {{ inner_num_x }} {{ inner_num_y }} {{ inner_num_z }} ) edgeGrading ( 1 1 1 1 1 1 1 1 1 1 1 1) // 0: Center Block
     hex (8 9 10 11 0 1 2 3) ( {{ inner_num_x }} {{ inner_num_y }} {{ bottom_num }} ) edgeGrading ( 1 1 1 1 1 1 1 1 {{ bottom_grading }} {{ bottom_grading }} {{ bottom_grading }} {{ bottom_grading }} ) //1: Center Cross Bottom
     hex (4 5 6 7 12 13 14 15) ( {{ inner_num_x }} {{ inner_num_y }} {{ top_num }} ) edgeGrading ( 1 1 1 1 1 1 1 1 {{ top_grading }} {{ top_grading }} {{ top_grading }} {{ top_grading }} ) //2: Center Cross Top
