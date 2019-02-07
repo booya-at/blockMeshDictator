@@ -1,0 +1,169 @@
+/*--------------------------------*- C++ -*----------------------------------*
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.1.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+
+vertices
+    (
+    {% for vertex in vertices -%}
+    ({{ vertex[0] | f2 }} {{ vertex[1] | f2 }} {{ vertex[2] | f2 }}) // {{ loop.index0 }}
+    {% endfor %}
+    );
+
+blocks
+    (
+    //Center Blocks
+    hex ({{ "BBB CBB CCB BCB BBC CBC CCC BCC" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ inner_num_z }}) simpleGrading (1 1 1) // 0: Center Block
+
+    hex ({{ "BBC CBC CCC BCC BBD CBD CCD BCD" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ top_cells }}) simpleGrading(1 1 {{ top_grading | f }}) //center top
+    hex ({{ "BCC CCC CDC BDC BCD CCD CDD BDD" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ top_cells }}) simpleGrading(1 {{ side_grading | f }} {{ top_grading | f }}) //center side/top
+    hex ({{ "BCB CCB CDB BDB BCC CCC CDC BDC" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ inner_num_z }}) simpleGrading(1 {{ side_grading | f }} 1) // center side
+
+
+    hex ({{ "BBA CBA CCA BCA BBB CBB CCB BCB" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ bottom_cells }}) simpleGrading (1 1 {{ bottom_grading | f }}) // center bottom
+    hex ({{ "BCA CCA CDA BDA BCB CCB CDB BDB" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ bottom_cells }}) simpleGrading (1 {{ side_grading | f }} {{ bottom_grading | f }}) // center bottom/side
+
+    // INLET
+    hex ({{ "ABB BBB BCB ACB ABC BBC BCC ACC" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ inner_num_z }}) simpleGrading ({{ inlet_grading | f }} 1 1) // inlet Center Block
+
+    hex ({{ "ABC BBC BCC ACC ABD BBD BCD ACD" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ top_cells }}) simpleGrading({{ inlet_grading | f }} 1 {{ top_grading | f }}) //inlet top
+    hex ({{ "ACC BCC BDC ADC ACD BCD BDD ADD" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ top_cells }}) simpleGrading({{ inlet_grading | f }} {{ side_grading | f }} {{ top_grading | f }}) //inlet side/top
+    hex ({{ "ACB BCB BDB ADB ACC BCC BDC ADC" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ inner_num_z }}) simpleGrading({{ inlet_grading | f }} {{ side_grading | f }} 1) // inlet side
+
+
+    hex ({{ "ABA BBA BCA ACA ABB BBB BCB ACB" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ bottom_cells }}) simpleGrading ({{ inlet_grading | f }} 1 {{ bottom_grading | f }}) // inlet bottom
+    hex ({{ "ACA BCA BDA ADA ACB BCB BDB ADB" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ bottom_cells }}) simpleGrading ({{ inlet_grading | f }} {{ side_grading | f }} {{ bottom_grading | f }}) // inlet bottom/side
+
+
+    // OUTLET
+    hex ({{ "CBB DBB DCB CCB CBC DBC DCC CCC" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ inner_num_z }}) simpleGrading ({{ outlet_grading | f }} 1 1) // outlet Center Block
+
+    hex ({{ "CBC DBC DCC CCC CBD DBD DCD CCD" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ top_cells }}) simpleGrading({{ outlet_grading | f }} 1 {{ top_grading | f }}) //center top
+    hex ({{ "CCC DCC DDC CDC CCD DCD DDD CDD" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ top_cells }}) simpleGrading({{ outlet_grading | f }} {{ side_grading | f }} {{ top_grading | f }}) //center side/top
+    hex ({{ "CCB DCB DDB CDB CCC DCC DDC CDC" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ inner_num_z }}) simpleGrading({{ outlet_grading | f }} {{ side_grading | f }} 1) // center side
+
+
+    hex ({{ "CBA DBA DCA CCA CBB DBB DCB CCB" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ bottom_cells }}) simpleGrading ({{ outlet_grading | f }} 1 {{ bottom_grading | f }}) // center bottom
+    hex ({{ "CCA DCA DDA CDA CCB DCB DDB CDB" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ bottom_cells }}) simpleGrading ({{ outlet_grading | f }} {{ side_grading | f }} {{ bottom_grading | f }}) // center bottom/side
+
+    );
+
+edges
+    (
+    );
+
+boundary
+    (
+    back
+        {
+        type patch;
+        faces
+        (
+            ({{ "DBA DCA DCB DBB" | node_ids }})
+            ({{ "DCA DDA DDB DCB" | node_ids }})
+
+            ({{ "DBB DCB DCC DBC" | node_ids }})
+            ({{ "DCB DDB DDC DCC" | node_ids }})
+
+            ({{ "DBC DCC DCD DBD" | node_ids }})
+            ({{ "DCC DDC DDD DCD" | node_ids }})
+        );
+    }
+    front
+    {
+        type patch;
+        faces
+        (
+            ({{ "ABA ACA ACB ABB" | node_ids }})
+            ({{ "ACA ADA ADB ACB" | node_ids }})
+
+            ({{ "ABB ACB ACC ABC" | node_ids }})
+            ({{ "ACB ADB ADC ACC" | node_ids }})
+
+            ({{ "ABC ACC ACD ABD" | node_ids }})
+            ({{ "ACC ADC ADD ACD" | node_ids }})
+        );
+    }
+    right
+    {
+        type patch;
+        faces
+        (
+            ({{ "ABA BBA BBB ABB" | node_ids }})
+            ({{ "BBA CBA CBB BBB" | node_ids }})
+            ({{ "CBA DBA DBB CBB" | node_ids }})
+
+            ({{ "ABB BBB BBC ABC" | node_ids }})
+            ({{ "BBB CBB CBC BBC" | node_ids }})
+            ({{ "CBB DBB DBC CBC" | node_ids }})
+
+            ({{ "ABC BBC BBD ABD" | node_ids }})
+            ({{ "BBC CBC CBD BBD" | node_ids }})
+            ({{ "CBC DBC DBD CBD" | node_ids }})
+        );
+    }
+    left
+    {
+        type patch;
+        faces
+        (
+            ({{ "ADA BDA BDB ADB" | node_ids }})
+            ({{ "BDA CDA CDB BDB" | node_ids }})
+            ({{ "CDA DDA DDB CDB" | node_ids }})
+
+            ({{ "ADB BDB BDC ADC" | node_ids }})
+            ({{ "BDB CDB CDC BDC" | node_ids }})
+            ({{ "CDB DDB DDC CDC" | node_ids }})
+
+            ({{ "ADC BDC BDD ADD" | node_ids }})
+            ({{ "BDC CDC CDD BDD" | node_ids }})
+            ({{ "CDC DDC DDD CDD" | node_ids }})
+        );
+    }
+    top
+    {
+        type patch;
+        faces
+        (
+            ({{ "ABD BBD BCD ACD" | node_ids }})
+            ({{ "ACD BCD BDD ADD" | node_ids }})
+
+            ({{ "BBD CBD CCD BCD" | node_ids }})
+            ({{ "BCD CCD CDD BDD" | node_ids }})
+
+            ({{ "CBD DBD DCD CCD" | node_ids }})
+            ({{ "CCD DCD DDD CDD" | node_ids }})
+
+        );
+    }
+    bottom
+    {
+        type patch;
+        faces
+        (
+            ({{ "ABA BBA BCA ACA" | node_ids }})
+            ({{ "ACA BCA BDA ADA" | node_ids }})
+
+            ({{ "BBA CBA CCA BCA" | node_ids }})
+            ({{ "BCA CCA CDA BDA" | node_ids }})
+
+            ({{ "CBA DBA DCA CCA" | node_ids }})
+            ({{ "CCA DCA DDA CDA" | node_ids }})
+        );
+    }
+);
+// ************************************************************************* //
