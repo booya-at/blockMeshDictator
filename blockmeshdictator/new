@@ -29,9 +29,9 @@ blocks
     //Center Blocks
     hex ({{ "BBB CBB CCB BCB BBC CBC CCC BCC" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ inner_num_z }}) simpleGrading (1 1 1) // 0: Center Block
 
-    hex ({{ "BBC CBC CCC BCC BBD CBD CCD BCD" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ top_cells }}) simpleGrading(1 1 {{ top_grading | f }}) //center top
-    hex ({{ "BCC CCC CDC BDC BCD CCD CDD BDD" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ top_cells }}) simpleGrading(1 {{ side_grading | f }} {{ top_grading | f }}) //center side/top
-    hex ({{ "BCB CCB CDB BDB BCC CCC CDC BDC" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ inner_num_z }}) simpleGrading(1 {{ side_grading | f }} 1) // center side
+    hex ({{ "BBC CBC CCC BCC BBD CBD CCD BCD" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ top_cells }}) simpleGrading (1 1 {{ top_grading | f }}) //center top
+    hex ({{ "BCC CCC CDC BDC BCD CCD CDD BDD" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ top_cells }}) simpleGrading (1 {{ side_grading | f }} {{ top_grading | f }}) //center side/top
+    hex ({{ "BCB CCB CDB BDB BCC CCC CDC BDC" | node_ids }}) ({{ inner_num_x }} {{ side_cells }} {{ inner_num_z }}) simpleGrading (1 {{ side_grading | f }} 1) // center side
 
 
     hex ({{ "BBA CBA CCA BCA BBB CBB CCB BCB" | node_ids }}) ({{ inner_num_x }} {{ inner_num_y }} {{ bottom_cells }}) simpleGrading (1 1 {{ bottom_grading | f }}) // center bottom
@@ -40,9 +40,9 @@ blocks
     // INLET
     hex ({{ "ABB BBB BCB ACB ABC BBC BCC ACC" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ inner_num_z }}) simpleGrading ({{ inlet_grading | f }} 1 1) // inlet Center Block
 
-    hex ({{ "ABC BBC BCC ACC ABD BBD BCD ACD" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ top_cells }}) simpleGrading({{ inlet_grading | f }} 1 {{ top_grading | f }}) //inlet top
-    hex ({{ "ACC BCC BDC ADC ACD BCD BDD ADD" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ top_cells }}) simpleGrading({{ inlet_grading | f }} {{ side_grading | f }} {{ top_grading | f }}) //inlet side/top
-    hex ({{ "ACB BCB BDB ADB ACC BCC BDC ADC" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ inner_num_z }}) simpleGrading({{ inlet_grading | f }} {{ side_grading | f }} 1) // inlet side
+    hex ({{ "ABC BBC BCC ACC ABD BBD BCD ACD" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ top_cells }}) simpleGrading ({{ inlet_grading | f }} 1 {{ top_grading | f }}) //inlet top
+    hex ({{ "ACC BCC BDC ADC ACD BCD BDD ADD" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ top_cells }}) simpleGrading ({{ inlet_grading | f }} {{ side_grading | f }} {{ top_grading | f }}) //inlet side/top
+    hex ({{ "ACB BCB BDB ADB ACC BCC BDC ADC" | node_ids }}) ({{ inlet_cells }} {{ side_cells }} {{ inner_num_z }}) simpleGrading ({{ inlet_grading | f }} {{ side_grading | f }} 1) // inlet side
 
 
     hex ({{ "ABA BBA BCA ACA ABB BBB BCB ACB" | node_ids }}) ({{ inlet_cells }} {{ inner_num_y }} {{ bottom_cells }}) simpleGrading ({{ inlet_grading | f }} 1 {{ bottom_grading | f }}) // inlet bottom
@@ -52,9 +52,9 @@ blocks
     // OUTLET
     hex ({{ "CBB DBB DCB CCB CBC DBC DCC CCC" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ inner_num_z }}) simpleGrading ({{ outlet_grading | f }} 1 1) // outlet Center Block
 
-    hex ({{ "CBC DBC DCC CCC CBD DBD DCD CCD" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ top_cells }}) simpleGrading({{ outlet_grading | f }} 1 {{ top_grading | f }}) //center top
-    hex ({{ "CCC DCC DDC CDC CCD DCD DDD CDD" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ top_cells }}) simpleGrading({{ outlet_grading | f }} {{ side_grading | f }} {{ top_grading | f }}) //center side/top
-    hex ({{ "CCB DCB DDB CDB CCC DCC DDC CDC" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ inner_num_z }}) simpleGrading({{ outlet_grading | f }} {{ side_grading | f }} 1) // center side
+    hex ({{ "CBC DBC DCC CCC CBD DBD DCD CCD" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ top_cells }}) simpleGrading ({{ outlet_grading | f }} 1 {{ top_grading | f }}) //center top
+    hex ({{ "CCC DCC DDC CDC CCD DCD DDD CDD" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ top_cells }}) simpleGrading ({{ outlet_grading | f }} {{ side_grading | f }} {{ top_grading | f }}) //center side/top
+    hex ({{ "CCB DCB DDB CDB CCC DCC DDC CDC" | node_ids }}) ({{ outlet_cells }} {{ side_cells }} {{ inner_num_z }}) simpleGrading ({{ outlet_grading | f }} {{ side_grading | f }} 1) // center side
 
 
     hex ({{ "CBA DBA DCA CCA CBB DBB DCB CCB" | node_ids }}) ({{ outlet_cells }} {{ inner_num_y }} {{ bottom_cells }}) simpleGrading ({{ outlet_grading | f }} 1 {{ bottom_grading | f }}) // center bottom

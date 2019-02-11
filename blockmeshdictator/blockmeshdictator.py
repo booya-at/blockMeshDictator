@@ -4,16 +4,33 @@ import jinja2
 
 import scipy.optimize
 
-
+defaults = {
+    "whole_mesh": False,
+    "inner_min": [-3, -2.5, -3],
+    "inner_max": [3, 2.5, 3],
+    "inner_size": 0.25,
+    "outer_min": [-30, -10, -10],
+    "outer_max": [15, 10, 10],
+    "bottom_cells": 15,
+    "bottom_grading": None,
+    "top_cells": 15,
+    "top_grading": None,
+    "side_cells": 20,
+    "side_grading": None,
+    "inlet_cells": 20,
+    "inlet_grading": None,
+    "outlet_cells": 45,
+    "outlet_grading": None
+}
 
 class BlockmeshDictator(object):
     whole_mesh = False
-    inner_size = 0.1
-    bottom_cells = 10
-    top_cells = 10
-    side_cells = 8
-    inlet_cells = 15
-    outlet_cells = 15
+    inner_size = 0.25
+    bottom_cells = 15
+    top_cells = 15
+    side_cells = 10
+    inlet_cells = 20
+    outlet_cells = 30
 
     def __init__(self, inner_min, inner_max, outer_min, outer_max):
         self.inner_min = inner_min
@@ -32,7 +49,7 @@ class BlockmeshDictator(object):
         length_center = self.inner_size
         # L=sum(x^i*d_0, {i, 1, num_blocks}) -> sum(x^i) - L/d_0 == 0
         f = lambda x: sum([x ** (i+1) for i in range(num_blocks)]) - length_total / length_center
-        res = scipy.optimize.newton(f, 1, maxiter=5000)**num_blocks
+        res = scipy.optimize.newton(f, 1, maxiter=50000)**num_blocks
         return res
 
     @staticmethod
@@ -169,11 +186,11 @@ class BlockmeshDictator(object):
         context["inner_num_y"] = get_num(1)
         context["inner_num_z"] = get_num(2)
 
-        context["bottom_grading"] = self.get_grading(context["bottom_cells"], self.inner_min[2] - self.outer_min[2])
-        context["top_grading"] = 1/self.get_grading(context["top_cells"], self.outer_max[2] - self.inner_max[2])
+        context["bottom_grading"] = 1/self.get_grading(context["bottom_cells"], self.inner_min[2] - self.outer_min[2])
+        context["top_grading"] = self.get_grading(context["top_cells"], self.outer_max[2] - self.inner_max[2])
 
-        context["inlet_grading"] = self.get_grading(context["inlet_cells"], self.inner_min[0] - self.outer_min[0])
-        context["outlet_grading"] = 1/self.get_grading(context["outlet_cells"], self.outer_max[0] - self.inner_max[0])
+        context["inlet_grading"] = 1/self.get_grading(context["inlet_cells"], self.inner_min[0] - self.outer_min[0])
+        context["outlet_grading"] = self.get_grading(context["outlet_cells"], self.outer_max[0] - self.inner_max[0])
 
         context["side_grading"] = self.get_grading(context["side_cells"], self.outer_max[1] - self.inner_max[1])
 
@@ -188,7 +205,7 @@ class BlockmeshDictator(object):
 
         def get_vertex_ids(string: str):
             vertice_names = string.split(" ")
-            vertice_ids = [str(ids[key]) for key in vertice_names]
+            vertice_ids = ["{: 2}".format(ids[key]) for key in vertice_names]
             return " ".join(vertice_ids)
 
         self.env.filters.update({
@@ -197,12 +214,3 @@ class BlockmeshDictator(object):
 
 
         return self.env.get_template("new").render(vertices=vertices, **context)
-
-inner_max = [1, 5, 1]
-inner_min = [0, -5, -8]
-
-outer_max = [10, 8, 10]
-outer_min = [-8, -8, -8]
-
-a = BlockmeshDictator(inner_min, inner_max, outer_min, outer_max)
-print(a.get_blockmeshdict())
