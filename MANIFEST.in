@@ -1,0 +1,3 @@
+include blockmeshdictator/blockMeshDict
+include blockmeshdictator/blockMeshDict_whole
+include blockmeshdictator/new
