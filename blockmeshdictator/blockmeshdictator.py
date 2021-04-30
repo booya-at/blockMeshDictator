@@ -27,16 +27,24 @@ class BlockmeshDictator(object):
     whole_mesh = False
     inner_size = 0.25
     bottom_cells = 15
+
+    inner_min = None
+    inner_max = None
+    
+    outer_min = None
+    outer_max = None
+    
     top_cells = 15
     side_cells = 10
     inlet_cells = 20
     outlet_cells = 30
 
-    def __init__(self, inner_min, inner_max, outer_min, outer_max):
-        self.inner_min = inner_min
-        self.inner_max = inner_max
-        self.outer_min = outer_min
-        self.outer_max = outer_max
+    def __init__(self, **kwargs):
+        for name, value in kwargs.items():
+            if not hasattr(self, name):
+                raise Exception(f"invalid config value: {name} ({value}")
+
+            setattr(self, name, value)
 
         self.env = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
         self.env.filters.update({
