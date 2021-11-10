@@ -2,7 +2,7 @@ from distutils.core import setup
 import setuptools
 import os
 
-requires = ['scipy']
+requires = ['scipy', 'jinja2']
 version = 0.1
 
 packages = ['blockmeshdictator']
