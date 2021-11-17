@@ -1,7 +1,7 @@
-from __future__ import division
+from typing import Dict, Tuple
 import os
-import jinja2
 
+import jinja2
 import scipy.optimize
 
 defaults = {
@@ -53,7 +53,7 @@ class BlockmeshDictator(object):
             "fourtimes": lambda s: "{0} {0} {0} {0}".format(s)
         })
 
-    def get_grading(self, num_blocks, length_total):
+    def get_grading(self, num_blocks: int, length_total: float) -> float:
         length_center = self.inner_size
         # L=sum(x^i*d_0, {i, 1, num_blocks}) -> sum(x^i) - L/d_0 == 0
         f = lambda x: sum([x ** (i+1) for i in range(num_blocks)]) - length_total / length_center
@@ -61,11 +61,11 @@ class BlockmeshDictator(object):
         return res
 
     @staticmethod
-    def get_length(num_blocks, length_center, grading):
+    def get_length(num_blocks: int, length_center: float, grading: float) -> float:
         # L=sum(x^i*d_0, {i, 1, num_blocks})
         return sum([grading ** (i + 1) for i in range(num_blocks)]) * length_center
 
-    def get_vertices(self):
+    def get_vertices(self) -> Dict[str, Tuple[float, float, float]]:
         inner_max = self.inner_max
         inner_min = self.inner_min
         outer_max = self.outer_max
@@ -165,7 +165,7 @@ class BlockmeshDictator(object):
         return self.vertices
 
 
-    def get_blockmeshdict(self):
+    def get_blockmeshdict(self) -> str:
         context = {
             "inner_size": self.inner_size,
             "inner_min": self.inner_min,
